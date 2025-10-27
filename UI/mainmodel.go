@@ -4,7 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"gorm.io/gorm"
+	"github.com/pclubiitk/dbcli/DB"
 )
 
 const (
@@ -25,8 +25,8 @@ type Model struct {
 	// ---- DB CREDENTIAL INPUTS ----
 	SourceCred  map[string]string
 	DestCred    map[string]string
-	Source	    *gorm.DB  //these are the most imp fields
-	Dest        *gorm.DB  //they are direct connections to databases
+	Source	    DB.DBInterface  //these are the most imp fields
+	Dest        DB.DBInterface  //they are direct connections to databases
 	CredInput   textinput.Model
 	CredKeys    []string
 	CredIndex   int
