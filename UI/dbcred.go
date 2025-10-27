@@ -37,11 +37,11 @@ func UpdateDBCred(m Model, msg tea.Msg) Model {
 					switch loweredVendor{
 					case "oracle":
 						DB.ConnectOracle( m.SourceCred["host"],  m.SourceCred["port"],  m.SourceCred["password"], m.SourceCred["dbname"], m.SourceCred["user"] )
-						m.Source=DB.OracleDB
+						m.Source=&DB.SQLWrapper{DB:DB.OracleDB}
 						break
 					case "mysql":
 						DB.ConnectMySQL( m.SourceCred["host"],  m.SourceCred["port"],  m.SourceCred["password"], m.SourceCred["dbname"], m.SourceCred["user"] )
-						m.Source=DB.MySQLDB
+						m.Source=&DB.GormWrapper{DB:DB.MySQLDB}
 						break
 					}
 				}else{
@@ -49,11 +49,11 @@ func UpdateDBCred(m Model, msg tea.Msg) Model {
 					switch loweredVendor{
 					case "oracle":
 						DB.ConnectOracle( m.DestCred["host"],  m.DestCred["port"],  m.DestCred["password"], m.DestCred["dbname"], m.DestCred["user"] )
-						m.Dest=DB.OracleDB
+						m.Dest=&DB.SQLWrapper{DB:DB.OracleDB}
 						break
 					case "mysql":
 						DB.ConnectMySQL( m.DestCred["host"],  m.DestCred["port"],  m.DestCred["password"], m.DestCred["dbname"], m.DestCred["user"] )
-						m.Dest=DB.MySQLDB
+						m.Dest=&DB.GormWrapper{DB:DB.MySQLDB}
 						break
 					}
 				}

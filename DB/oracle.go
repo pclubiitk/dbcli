@@ -1,28 +1,27 @@
 package DB
 
 import (
-	"fmt"
+    "database/sql"
+    "fmt"
+    "log"
 
-	"github.com/sirupsen/logrus"
-	"github.com/cengsin/oracle"
-
-	"gorm.io/gorm"
+    _ "github.com/godror/godror"
 )
 
-var OracleDB *gorm.DB
+var OracleDB *sql.DB
 
-func ConnectOracle(host, port, password, dbName, user string) {
-	// Data Source Name (DSN) format for Oracle
-	// Example: user:password@tcp(localhost:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		user, password, host, port, dbName)
+func ConnectOracle(host, port, service, user, password string) {
+    dsn := fmt.Sprintf("%s/%s@%s:%s/%s", user, password, host, port, service)
 
-	database, err := gorm.Open(oracle.Open(dsn), &gorm.Config{})
-	if err != nil {
-		logrus.Fatal("Failed to connect to Oracle database: ", err)
-	}
+    db, err := sql.Open("godror", dsn)
+    if err != nil {
+        log.Fatalf("Failed to connect to Oracle: %v", err)
+    }
 
-	OracleDB = database
+    if err := db.Ping(); err != nil {
+        log.Fatalf("Oracle ping failed: %v", err)
+    }
 
-	logrus.Info("✅ Connected to Oracle database successfully")
+    OracleDB = db
+    log.Println("✅ Connected to Oracle database successfully")
 }
